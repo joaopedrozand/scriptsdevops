@@ -12,7 +12,7 @@ services:
       - 10051:10051
     environment:
       - ZBX_PROXYMODE=0
-      - ZBX_HOSTNAME=proxy.renascenca.com.br
+      - ZBX_HOSTNAME=proxy.xxxxxxxx.com.br
       - ZBX_SERVER_HOST=168.138.228.206
       - ZBX_SERVER_PORT=10051
       - ZBX_DEBUGLEVEL=3
@@ -30,7 +30,7 @@ services:
     ports:
       - 10050:10050
     environment:
-      - ZBX_HOSTNAME=proxy.renascenca.com.br
+      - ZBX_HOSTNAME=proxy.xxxxxxxx.com.br
       - ZBX_SERVER_HOST=192.168.255.3,192.168.255.1
       - ZBX_DEBUGLEVEL=3
       - ZBX_ACTIVE_ALLOW=0
