@@ -1,0 +1,48 @@
+version: "3.6"
+
+services:
+  zabbix-proxy-sqlite3:
+    image: zabbix/zabbix-proxy-sqlite3:alpine-5.4.12
+    container_name: zabbix_proxy
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 10051:10051
+    environment:
+      - ZBX_PROXYMODE=0
+      - ZBX_HOSTNAME=proxy.xxxxxxxx.com.br
+      - ZBX_SERVER_HOST=168.138.228.206
+      - ZBX_SERVER_PORT=10051
+      - ZBX_DEBUGLEVEL=3
+    networks:
+      zbbx:
+        ipv4_address: 192.168.255.3
+
+  zabbix-agent2:
+    image: zabbix/zabbix-agent2:alpine-5.4.12
+    container_name: zabbix_agent2
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 10050:10050
+    environment:
+      - ZBX_HOSTNAME=proxy.xxxxxxxx.com.br
+      - ZBX_SERVER_HOST=192.168.255.3,192.168.255.1
+      - ZBX_DEBUGLEVEL=3
+      - ZBX_ACTIVE_ALLOW=0
+    networks:
+      zbbx:
+        ipv4_address: 192.168.255.2
+
+networks:
+  zbbx:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.255.0/24
+          gateway: 192.168.255.1
