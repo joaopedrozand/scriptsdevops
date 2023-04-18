@@ -12,11 +12,13 @@ services:
       - 10051:10051
     environment:
       - ZBX_PROXYMODE=0
-      - ZBX_HOSTNAME=zbbx-proxy
-      - ZBX_SERVER_HOST=x.x.x.x
+      - ZBX_HOSTNAME=proxy.renascenca.com.br
+      - ZBX_SERVER_HOST=168.138.228.206
       - ZBX_SERVER_PORT=10051
       - ZBX_DEBUGLEVEL=3
-
+    networks:
+      zbbx:
+        ipv4_address: 192.168.255.3
 
   zabbix-agent2:
     image: zabbix/zabbix-agent2:alpine-5.4.12
@@ -28,7 +30,19 @@ services:
     ports:
       - 10050:10050
     environment:
-      - ZBX_HOSTNAME=zbbx-agent2
-      - ZBX_SERVER_HOST=localhost
+      - ZBX_HOSTNAME=proxy.renascenca.com.br
+      - ZBX_SERVER_HOST=192.168.255.3,192.168.255.1
       - ZBX_DEBUGLEVEL=3
       - ZBX_ACTIVE_ALLOW=0
+    networks:
+      zbbx:
+        ipv4_address: 192.168.255.2
+
+networks:
+  zbbx:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.255.0/24
+          gateway: 192.168.255.1
